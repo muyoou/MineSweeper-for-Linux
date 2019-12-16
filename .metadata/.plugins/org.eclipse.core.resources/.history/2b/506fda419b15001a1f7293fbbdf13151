@@ -1,0 +1,35 @@
+package jblei;
+import java.io.IOException;
+
+public class Start {
+	public static void main(String[] args) throws IOException, InterruptedException {
+		String[] cmd = { "/bin/sh", "-c", "stty raw </dev/tty" };
+		String[] cmd2 = { "/bin/sh", "-c", "stty -raw </dev/tty" };
+		Runtime.getRuntime()
+        .exec(cmd)
+        .waitFor();
+		int x=0,y=0,wi=9,he=9;
+		MapManage myCreateMap =new MapManage(wi, he);
+		myCreateMap.create(10);
+		Calculate myCalculate = new Calculate(myCreateMap);
+		//myCalculate.clear(1, 4);
+		Display myDisplay =new Display(myCreateMap.getMap(), myCalculate.getCover());
+		myDisplay.printHead();
+		myDisplay.printMap();
+		myDisplay.printFoot();
+		while(true) {
+			char ch = (char) System.in.read();
+			if(ch==115&&y<he-1) y++;
+			else if(ch==77&&x<wi-1) x++;
+			else if(ch==97&&x>0) x--;
+			else if(ch==119&&y>0) y--;
+			else if(ch==113) {
+				Runtime.getRuntime()
+		        .exec(cmd2)
+		        .waitFor();
+				System.exit(0);
+			}
+			System.out.println(x+","+y);
+		}
+	}
+}

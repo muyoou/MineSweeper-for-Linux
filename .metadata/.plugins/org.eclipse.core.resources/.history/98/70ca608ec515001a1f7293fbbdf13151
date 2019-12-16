@@ -1,0 +1,57 @@
+package jblei;
+import java.io.IOException;
+
+public class Start {
+	public static void main(String[] args) throws IOException, InterruptedException {
+		String[] cmd = { "/bin/sh", "-c", "stty raw </dev/tty" };
+		String[] cmd2 = { "/bin/sh", "-c", "stty -raw </dev/tty" };
+		Runtime.getRuntime()
+        .exec(cmd)
+        .waitFor();
+		int x=0,y=0,wi=9,he=9;
+		Display.printMap(wi, he);
+		MapManage myCreateMap =new MapManage(wi, he);
+		myCreateMap.create(10);
+		Calculate myCalculate = new Calculate(myCreateMap);
+		Display myDisplay =new Display(myCreateMap,myCalculate);
+		myDisplay.resetPos(0, 0);
+		while(true) {
+			char ch = (char) System.in.read();
+			if(ch==80&&y<he-1) {y++;}
+			else if (ch == 27) {
+                char next1 = (char) System.in.read();
+                char next2 = (char) System.in.read();
+                if (next1 == 91) {
+                    if (next2 == 68&&x>0) {
+                        x--;
+                        myDisplay.MoveR(false);
+                    }
+                    else if (next2 == 67&&x<wi-1) {
+                        x++;
+                        myDisplay.MoveR(true);
+                    }
+                    else if(next2==65&&y>0) {
+                    	y--;
+                    	myDisplay.MoveT(false);
+                    }
+                    else if(next2==66&&y<he-1) {
+                    	y++;
+                    	myDisplay.MoveT(true);
+                    }
+                }
+            }
+			else if(ch==113) {
+				myDisplay.End();
+				Runtime.getRuntime()
+		        .exec(cmd2)
+		        .waitFor();
+				System.exit(0);
+			}
+			else if(ch==13) {
+				myDisplay.AddFlag();
+				myCalculate.setFlag();
+			}
+			
+		}
+	}
+}

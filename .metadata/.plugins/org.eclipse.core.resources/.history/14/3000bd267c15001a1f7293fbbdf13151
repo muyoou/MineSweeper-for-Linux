@@ -1,0 +1,7 @@
+package jblei;
+
+public class createMap {
+	static void create(int wi,int he,int num) {
+		int[][] newMap=new int[wi][he];
+	}
+}

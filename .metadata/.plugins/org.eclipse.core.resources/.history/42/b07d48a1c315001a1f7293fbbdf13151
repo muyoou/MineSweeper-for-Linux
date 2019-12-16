@@ -1,0 +1,63 @@
+package jblei;
+
+import java.util.Random;
+
+public class MapManage {
+	private final int wi;
+	private final int he;
+	private int[][] newMap;
+	public MapManage(int wi,int he) {
+		this.wi=wi;
+		this.he=he;
+		this.newMap=new int[wi][he];
+	}
+	public void create(int num) {
+		Random random =new Random(47);
+		Random random2 = new Random(59);
+		for(int i=0;i<num;i++) {
+			newMap[random.nextInt(wi)][random2.nextInt(he)]=9;
+		}
+		for(int i=0;i<wi;i++)
+			for(int j=0;j<he;j++)
+				if(newMap[i][j]!=9)
+					newMap[i][j]=mineNum(i, j);
+	}
+	
+	public int[][] getMap(){
+		return newMap;
+	}
+	
+	private int mineNum(int x,int y) {
+		int num=0;
+		for(int i=-1;i<2;i++) 
+			for(int j=-1;j<2;j++)
+				num+=isMine(x+i, y+j)?1:0;
+		return num;
+	}
+	
+	public int getWidth() {
+		return wi;
+	}
+	
+	public int getHeight() {
+		return he;
+	}
+	
+	public boolean haveNull(int x,int y) {
+		if(newMap[x][y]==9) return false;
+		for(int i=-1;i<2;i++) 
+			for(int j=-1;j<2;j++)
+				if(isNull(x+i, y+j)) return true;
+		return false;
+	}
+	
+	public boolean isMine(int x,int y) {
+		if(x>=0&&y>=0&&x<wi&&y<he&&newMap[x][y]==9) return true;
+		else return false;
+	}
+	public boolean isNull(int x,int y) {
+		if(x>=0&&y>=0&&x<wi&&y<he&&newMap[x][y]==0) return true;
+		else return false;
+	}
+
+}

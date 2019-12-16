@@ -1,0 +1,14 @@
+package jblei;
+
+public class Calculate {
+	public void clear() {
+		
+	}
+	public static void main(String[] args) {
+		createMap myCreateMap =new createMap(9, 9);
+		Display myDisplay =new Display(myCreateMap.create(10), new int[9][9]);
+		myDisplay.printHead();
+		myDisplay.printMap();
+		myDisplay.printFoot();
+	}
+}

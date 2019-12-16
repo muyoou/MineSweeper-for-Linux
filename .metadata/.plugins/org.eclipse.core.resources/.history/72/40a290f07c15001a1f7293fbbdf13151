@@ -1,0 +1,18 @@
+package jblei;
+
+import java.util.Random;
+
+public class createMap {
+	static int[][] create(int wi,int he,int num) {
+		int[][] newMap=new int[wi][he];
+		Random random =new Random(74);
+		System.out.println(random.nextInt(9));
+		return newMap;
+	}
+	public static void main(String[] args) {
+		Display myDisplay =new Display(create(9, 9, 10), new int[9][9]);
+		myDisplay.printHead();
+		myDisplay.printMap();
+		myDisplay.printFoot();
+	}
+}

@@ -1,0 +1,184 @@
+package jblei;
+
+
+public class Display {
+	private MapManage mm;
+	private Calculate ca;
+	private int X=0,Y=0;
+	public Display(MapManage mm,Calculate ca) {
+		this.mm=mm;
+		this.ca=ca;
+	}
+	public static void printMap(int wiSize,int heSize) {
+		System.out.print("\u001b[0m");
+		printHead(wiSize);
+		System.out.print("╔");
+		for(int i=0;i<wiSize*2;i++) {
+			System.out.print("═");
+		}
+		System.out.print("╗");
+		System.out.print("\u001b[1000D");
+		System.out.println();
+		for(int i=0;i<wiSize;i++) {
+			System.out.print("║");
+			System.out.print("\u001b[47;1m");
+			for(int j=0;j<heSize;j++) {
+				System.out.print("▀");
+				System.out.print(" ");
+				
+			}
+			System.out.print("\u001b[0m");
+			System.out.print("║");
+			System.out.println();
+			System.out.print("\u001b[1000D");
+		}
+		System.out.print("╚");
+		for(int i=0;i<wiSize*2;i++) {
+			System.out.print("═");
+		}
+		System.out.print("╝");
+		printFoot(wiSize, heSize);
+	}
+	private static void printHead(int wiSize) {
+		for(int i=0;i<wiSize-3;i++) System.out.print(" ");
+		System.out.println("♪(*^∇^)");
+		System.out.print("\u001b[1000D");
+	}
+	private static void printFoot(int wiSize,int heSize) { 
+		System.out.println();
+		System.out.print("\u001b[1000D");
+		System.out.println("难度："+wiSize+"*"+heSize);
+		System.out.print("\u001b[1000D");
+		System.out.println("得分：0");
+		System.out.print("\u001b[1000D");
+		
+	}
+	
+	public void resetPos(int x,int y) {
+		X=x;Y=y;
+		ToZero();
+		//ToPos(1, 1);
+	}
+	 
+	private void ToZero() {
+		System.out.print("\u001b[1000D");
+		System.out.print("\u001b["+(3+mm.getHeight())+"A");
+		System.out.print("\u001b[1C");
+		
+		System.out.print("\u001b[44;1m");
+		System.out.print("▀ ");
+		System.out.print("\u001b[0m");
+		System.out.print("\u001b[2A");
+		System.out.print("\u001b[3D");
+		System.out.print("\u001b[s");
+	}
+	
+	private void ToPos() {
+		System.out.print("\u001b[1000D");
+		System.out.print("\u001b["+(Y+2)+"B");
+		System.out.print("\u001b["+(X*2+1)+"C");
+		
+	}
+	
+	private static void ToPos(int x,int y) {
+		System.out.print("\u001b[1000D");
+		System.out.print("\u001b["+(y+2)+"B");
+		System.out.print("\u001b["+(x*2+1)+"C");
+	}
+	
+	private static void back() {
+		System.out.print("\u001b[u");
+	}
+	
+	public void MoveR(boolean r) {
+		ToPos();
+		ClearPos();
+		if(r) {
+			X++;
+			PrintPos();
+		}else {
+			X--;
+			System.out.print("\u001b[4D");
+			PrintPos();
+		}
+		back();
+	}
+	
+	public void MoveT(boolean t) {
+		ToPos();
+		ClearPos();
+		if(t) {
+			Y++;
+			System.out.print("\u001b[2D");
+			System.out.print("\u001b[1B");
+			PrintPos();
+		}else {
+			Y--;
+			System.out.print("\u001b[2D");
+			System.out.print("\u001b[1A");
+			PrintPos();
+		}
+		back();
+	}
+	
+	private void ClearPos() {
+		switch (ca.getNum(X, Y)) {
+		case 2:
+			System.out.print("\u001b[2C");
+			break;
+		case 1:
+			System.out.print(MapManage.getNum(X, Y)+" ");
+			break;
+
+		default:
+			System.out.print("\u001b[47;1m");
+			System.out.print("▀ ");
+			System.out.print("\u001b[0m");
+		}
+	}
+	
+	private void PrintPos() {
+		switch (ca.getNum(X, Y)) {
+		case 2:
+			System.out.print("\u001b[2C");
+			break;
+		case 1:
+			System.out.print("\u001b[44;1m");
+			System.out.print(MapManage.getNum(X, Y)+" ");
+			System.out.print("\u001b[0m");
+			break;
+		default:
+			System.out.print("\u001b[44;1m");
+			System.out.print("▀ ");
+			System.out.print("\u001b[0m");
+		}
+	}
+	
+	public void RefreshPos() {
+		ToPos();
+		PrintPos();
+		System.out.print("\u001b[2D");
+	}
+	
+	public static void open(int x,int y) {
+		ToPos(x, y);
+		System.out.print(MapManage.getNum(x, y)+" ");
+		back();
+		
+	}
+	
+	public void AddFlag() {
+		ToPos();
+		System.out.print("\u001b[2D");
+		System.out.print("\u001b[42m");
+		System.out.print("▼ ");
+		System.out.print("\u001b[0m");
+		back();
+	}
+	
+	
+	public void End() {
+		back();
+		System.out.print("\u001b["+(5+mm.getHeight())+"B");
+	}
+}

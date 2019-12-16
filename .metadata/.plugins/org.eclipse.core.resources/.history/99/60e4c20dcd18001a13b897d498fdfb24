@@ -1,0 +1,65 @@
+package jblei;
+
+public class Calculate {
+	private int[][] newCover;
+	private final int wi,he;
+	MapManage manage;
+	public Calculate(MapManage manage) {
+		this.manage=manage;
+		this.wi=manage.getWidth();
+		this.he=manage.getHeight();
+		newCover=new int[wi][he];
+	}
+	
+	public boolean OpenOne(int x,int y) {
+		if(!manage.haveNull(x, y)) {
+			if(manage.isMine(x, y)) {
+				return false;
+			}
+			else {
+				setOpen(x, y);
+				return true;
+			}
+		}else {clear(x, y);
+			return true;
+		}
+		
+	}
+	
+	public void clear(int x,int y) {
+		if(x>=0&&x<he&&y>=0&&y<wi&&manage.haveNull(x, y)&&newCover[x][y]!=1) {
+			setOpen(x, y);
+			clear(x, y+1);
+			clear(x+1, y);
+			clear(x, y-1);
+			clear(x-1, y);
+		}
+	}
+	
+	public int[][] getCover(){
+		return newCover;
+	}
+	
+	public boolean setFlag(int x,int y) {
+		newCover[x][y]=2;
+		return isSuc();
+	}
+	
+	public void setOpen(int x,int y) {
+		newCover[x][y]=1;	
+		Display.open(x,y,manage.getNum(x, y));
+	}
+	
+	public int getNum(int x,int y) {
+		return newCover[x][y];
+	}
+	
+	private boolean isSuc() {
+		for(int i=0;i<wi;i++) 
+			for(int j=0;j<he;j++) 
+				if(manage.isMine(i, j))
+					if(newCover[i][j]!=2)
+						return false;
+		return true;
+	}
+}

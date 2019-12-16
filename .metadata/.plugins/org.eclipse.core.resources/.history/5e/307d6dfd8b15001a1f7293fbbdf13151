@@ -1,0 +1,20 @@
+package jblei;
+
+public class Calculate {
+	int[][] newCover;
+	MapManage manage;
+	public Calculate(MapManage manage) {
+		this.manage=manage;
+		newCover=new int[manage.getWidth()][manage.getHeight()];
+	}
+	public void clear(int x,int y) {
+		if(manage.haveNull(x, y)) newCover[x][y]=1;
+	}
+	public static void main(String[] args) {
+		MapManage myCreateMap =new MapManage(9, 9);
+		Display myDisplay =new Display(myCreateMap.create(10), new int[9][9]);
+		myDisplay.printHead();
+		myDisplay.printMap();
+		myDisplay.printFoot();
+	}
+}

@@ -1,0 +1,14 @@
+package jblei;
+
+public class createMap {
+	static int[][] create(int wi,int he,int num) {
+		int[][] newMap=new int[wi][he];
+		return newMap;
+	}
+	public static void main(String[] args) {
+		Display myDisplay =new Display(create(9, 9, 10), new int[9][9]);
+		myDisplay.printHead();
+		myDisplay.printMap();
+		myDisplay.printFoot();
+	}
+}
